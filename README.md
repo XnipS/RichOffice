@@ -6,7 +6,7 @@ Discord Rich Presence for Microsoft Office
 - Each application requires an OAuth2 URL of **http://127.0.0.1**.
 - Each application also requires an art asset (icon of the app) named using lowercase convention: "Excel" for example.
 - Download and extract to a single folder.
-- Rename the given default config file to **config.json** and fill required fields with OAuth2 Client IDs.
+- Rename the given default config file to **config.json**, fill required fields with OAuth2 Client IDs and move to same directory as binary.
 - Open executable.
 
 ## Building
