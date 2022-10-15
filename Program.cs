@@ -82,18 +82,27 @@ while(true)
 	// Console.WriteLine($"Mem usage: {GC.GetTotalMemory(true):#,0} bytes");
 }
 
+// Presence Update
 void UpdatePresence()
 {
 	string title = "Idle";
 	try
 	{
-		string windowTitle = Process.GetProcessesByName(input)[0].MainWindowTitle;
+		string windowTitle;
+		if(input == "word")
+		{
+			windowTitle = Process.GetProcessesByName("win" + input)[0].MainWindowTitle;
+		}
+		else
+		{
+			windowTitle = Process.GetProcessesByName(input)[0].MainWindowTitle;
+		}
 		Console.WriteLine("[RO] Found " + input + "! - " + windowTitle);
 		title = windowTitle.Remove(windowTitle.Length - 8, 8);
 	}
 	catch
 	{
-		Console.WriteLine("[RO] No " + input + " Detected");
+		Console.WriteLine("[RO] No " + input + " detected");
 		Console.ReadLine();
 		Environment.Exit(0);
 	}
@@ -101,7 +110,7 @@ void UpdatePresence()
 	client.SetPresence(new RichPresence()
 	{
 		Details = title,
-		State = "DEVELOPMENT",
+		State = "Editing...",
 		Assets = new Assets()
 		{
 			LargeImageKey = input,
