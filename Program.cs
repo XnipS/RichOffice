@@ -30,7 +30,7 @@ catch
 }
 
 // Select application
-void SelectApp ()
+void SelectApp()
 {
 	while(!appfound)
 	{
@@ -57,7 +57,7 @@ void SelectApp ()
 	}
 }
 
-void StartClient (string read)
+void StartClient(string read)
 {
 	appfound = true;
 	input = read;
@@ -104,9 +104,28 @@ while(true)
 		case "exit":
 		Environment.Exit(0);
 		break;
+		case "help" or "commands":
+		Help();
+		break;
 		default:
 		Console.WriteLine("> Invalid command!");
 		break;
+	}
+}
+
+// Print help
+void Help()
+{
+	try
+	{
+		foreach(string line in System.IO.File.ReadLines("commands"))
+		{
+			System.Console.WriteLine(line);
+		}
+	}
+	catch
+	{
+		Console.WriteLine("> Missing command data!");
 	}
 }
 
