@@ -30,56 +30,84 @@ catch
 }
 
 // Select application
-while(!appfound)
+void SelectApp ()
 {
-	Console.WriteLine("Please enter application to find (Excel or Word):");
-	string read = Console.ReadLine();
-	read = read.ToLower();
-
-	switch(read)
+	while(!appfound)
 	{
-		case "word":
-		client = new DiscordRpcClient(configuration.word_id);
-		noun = "word document";
-		appfound = true;
-		input = read;
-		break;
-		case "excel":
-		client = new DiscordRpcClient(configuration.excel_id);
-		noun = "spreadsheet";
-		appfound = true;
-		input = read;
-		break;
-		default:
-		Console.WriteLine("Invalid application!");
-		break;
+		Console.WriteLine("> Please enter application to find (Excel or Word):");
+		string read = Console.ReadLine();
+		read = read.ToLower();
+
+		switch(read)
+		{
+			case "word":
+			client = new DiscordRpcClient(configuration.word_id);
+			noun = "word document";
+			StartClient(read);
+			break;
+			case "excel":
+			client = new DiscordRpcClient(configuration.excel_id);
+			noun = "spreadsheet";
+			StartClient(read);
+			break;
+			default:
+			Console.WriteLine("> Invalid application!");
+			break;
+		}
 	}
 }
 
-// Initialise logging
-client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
-
-// Subscribe to events
-client.OnReady += (sender, e) =>
+void StartClient (string read)
 {
-	Console.WriteLine("[RPC] Received Ready from user {0}", e.User.Username);
-};
+	appfound = true;
+	input = read;
 
-client.OnPresenceUpdate += (sender, e) =>
-{
-	Console.WriteLine("[RPC] Received Update! {0}", e.Presence);
-};
+	// Initialise logging
+	client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
 
-// Connect to the RPC
-client.Initialize();
+	// Subscribe to events
+	client.OnReady += (sender, e) =>
+	{
+		Console.WriteLine("\r[RPC] Received Ready from user {0}", e.User.Username);
+		Console.Write("[RO] Ready! > ");
+	};
 
-// Initial Activity
-UpdatePresence();
+	client.OnPresenceUpdate += (sender, e) =>
+	{
+		Console.WriteLine("\r[RPC] Received Update! {0}", e.Presence);
+		Console.Write("[RO] Ready! > ");
+	};
 
-// Main Loop
+	// Connect to the RPC
+	client.Initialize();
+
+}
+
+// Command Loop
 while(true)
 {
-	// Console.WriteLine($"Mem usage: {GC.GetTotalMemory(true):#,0} bytes");
+	Console.Write("[RO] Ready! > ");
+	string command = Console.ReadLine();
+	command = command.ToLower();
+	switch(command)
+	{
+		case "memory" or "mem":
+		Console.WriteLine("> Mem usage: {GC.GetTotalMemory(true):#,0} bytes");
+		break;
+		case "update":
+		UpdatePresence();
+		break;
+		case "swap" or "select":
+		appfound = false;
+		SelectApp();
+		break;
+		case "exit":
+		Environment.Exit(0);
+		break;
+		default:
+		Console.WriteLine("> Invalid command!");
+		break;
+	}
 }
 
 // Presence Update
@@ -102,20 +130,30 @@ void UpdatePresence()
 	}
 	catch
 	{
-		Console.WriteLine("[RO] No " + input + " detected");
-		Console.ReadLine();
-		Environment.Exit(0);
+		if(input != " ")
+		{
+			Console.WriteLine("[RO] No application selected...");
+		}
+		else
+		{
+			Console.WriteLine("[RO] No " + input + " detected...");
+		}
+		return;
 	}
 
 	client.SetPresence(new RichPresence()
 	{
 		Details = title,
 		State = "Editing...",
+		Timestamps = new Timestamps()
+		{
+			Start = DateTime.UtcNow,
+			End = null
+		},
 		Assets = new Assets()
 		{
 			LargeImageKey = input,
-			LargeImageText = "Editing a " + noun + "..."//,
-			//SmallImageKey = "image_small"
+			LargeImageText = "Editing a " + noun + "..."
 		}
 	});
 }
