@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 
 // Welcome text
-Console.WriteLine("Welcome to: \r\n  _____  _      _        ____   __  __ _          \r\n |  __ \\(_)    | |      / __ \\ / _|/ _(_)         \r\n | |__) |_  ___| |__   | |  | | |_| |_ _  ___ ___ \r\n |  _  /| |/ __| '_ \\  | |  | |  _|  _| |/ __/ _ \\\r\n | | \\ \\| | (__| | | | | |__| | | | | | | (_|  __/\r\n |_|  \\_\\_|\\___|_| |_|  \\____/|_| |_| |_|\\___\\___|\r\n\nBy XnipS");
+Console.WriteLine("Welcome to: \r\n  _____  _      _        ____   __  __ _          \r\n |  __ \\(_)    | |      / __ \\ / _|/ _(_)         \r\n | |__) |_  ___| |__   | |  | | |_| |_ _  ___ ___ \r\n |  _  /| |/ __| '_ \\  | |  | |  _|  _| |/ __/ _ \\\r\n | | \\ \\| | (__| | | | | |__| | | | | | | (_|  __/\r\n |_|  \\_\\_|\\___|_| |_|  \\____/|_| |_| |_|\\___\\___|\r\n\nBy XnipS!\nType help for commands...");
 
 // Variables
 bool appfound = false;
@@ -118,9 +118,9 @@ void Help()
 {
 	try
 	{
-		foreach(string line in System.IO.File.ReadLines("commands"))
+		foreach(string line in File.ReadLines("commands"))
 		{
-			System.Console.WriteLine(line);
+			Console.WriteLine(line);
 		}
 	}
 	catch
