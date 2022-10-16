@@ -57,8 +57,10 @@ void SelectApp()
 	}
 }
 
+// Initialise the client
 void StartClient(string read)
 {
+	// Commonly used
 	appfound = true;
 	input = read;
 
@@ -80,15 +82,17 @@ void StartClient(string read)
 
 	// Connect to the RPC
 	client.Initialize();
-
 }
 
 // Command Loop
 while(true)
 {
+	// Request user interaction
 	Console.Write("[RO] Ready! > ");
 	string command = Console.ReadLine();
 	command = command.ToLower();
+
+	// Command switch
 	switch(command)
 	{
 		case "memory" or "mem":
